@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class Player_Script : MonoBehaviour
 {
-    float speed = 2f; // player move speed
+    [SerializeField]
+    private float speedPerso = 2f; // player move speed
 
-    // Start is called before the first frame update
+    [SerializeField]
+    private Rigidbody rgbd;
+
+    public float ballSpeed;
+
+    Ball ballScript;
+   
     void Start()
     {
       
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         float h = Input.GetAxisRaw("Horizontal"); // get the horizontal axis of the keyboard
@@ -20,7 +27,7 @@ public class Player_Script : MonoBehaviour
 
         if (h !=0 || v !=0)
         {
-            transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
+            transform.Translate(new Vector3(h, 0, v) * speedPerso * Time.deltaTime);
         }
     }
 
@@ -28,10 +35,16 @@ public class Player_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ball"))
-        {
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
 
-
-        }
+            if (other.CompareTag("Ball"))
+            {
+                rgbd = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
+                ballScript = GameObject.Find("Ball").GetComponent<Ball>();
+                ballSpeed = ballScript.m_speedBall;
+                rgbd.velocity = transform.forward * ballSpeed;
+            }
+       //}
     }
 }
